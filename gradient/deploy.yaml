@@ -1,0 +1,22 @@
+clusterId: clpvt0s6x 
+command: /ie-serving-py/start_server.sh ie_serving model --model_path /models/model  --port 9001 --rest_port 8001 #--model_name bacteria_classifier
+containerModelPath: /models/model
+containerUrlPath: /v1/models/model 
+deploymentType: Custom
+dockerArgs: null
+env: null
+imagePassword: null
+imageServer: null
+imageUrl: intelaipg/openvino-model-server
+imageUsername: null
+instanceCount: 1
+machineType: C5
+#maxInstanceCount: 5
+method: null
+metric: null
+#minInstanceCount: 1
+modelId: mos05oy4sh3g43d
+name: open-vino-server
+ports: 8001
+projectId: prs3cl0zp
+#resource: cpuPercentage/targetAverage:0.2

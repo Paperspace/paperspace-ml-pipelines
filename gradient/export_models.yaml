@@ -1,0 +1,12 @@
+machineType: P4000
+clusterId : clpvt0s6x
+command: cp -r ./ /artifacts/
+container: paperspace/openvinopipeline:mo
+modelPath: /artifacts
+modelType: Custom
+name: fastai-pipeline
+projectId: prs3cl0zp
+workspace: ./faster_rcnn_resnet50_coco_2018_01_28/object-detect
+ignoreFiles: model-optimizer/*
+experimentEnv: 
+  apiKey_openvino: 'secret:apiKey_openvino'

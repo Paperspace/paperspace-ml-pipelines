@@ -1,0 +1,11 @@
+machineType: metal-cpu
+clusterId : cl1nurf0i
+command: python3 tools/upscale_coco/upscale_coco.py --inputs /storage/data/coco --outputs /storage/data/coco300 --size 300 300
+# --images val2017 --annotations annotations/instances_val2017.json
+container: paperspace/openvinopipeline:mo
+name: download_coco
+projectId: pr20lgf8g
+workspace: ./gradient
+ignoreFiles: model-optimizer/*
+experimentEnv: 
+  apiKey_openvino: 'secret:apiKey_openvino'
