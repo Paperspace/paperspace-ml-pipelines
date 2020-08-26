@@ -2,8 +2,8 @@ machineType: metal-cpu
 clusterId : cl1nurf0i
 #command:  pip3 install -r requirement.txt && sh tools/download_coco.sh
 #command:  python3 ./tools/download_coco.py --inputs /storage/data/coco
-command: cd classification_and_detection && pip3 install -r requirements.txt && bash ./run_local.sh tf ssd-mobilenet --time 10 --scenario SingleStream
-command: cd classification_and_detection && pip3 install -r requirements.txt && bash ./run_local.sh openvino ssd-mobilenet --time 10 --scenario SingleStream 
+command: cd classification_and_detection && pip3 install -r requirements.txt && bash ./run_local.sh tf ssd-mobilenet --time 10 --scenario SingleStream && bash ./run_local.sh openvino ssd-mobilenet --time 10 --scenario SingleStream
+#command: cd classification_and_detection && pip3 install -r requirements.txt && bash ./run_local.sh openvino ssd-mobilenet --time 10 --scenario SingleStream 
 #command: cd classification_and_detection && pip3 install -r requirements.txt && sleep 9999 
 container: paperspace/gradient-benchmarks:mlperf
 modelType: Custom
