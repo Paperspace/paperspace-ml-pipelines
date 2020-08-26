@@ -1,9 +1,11 @@
 machineType: metal-cpu
 clusterId : cl1nurf0i
-command: python3 tools/upscale_coco/upscale_coco.py --inputs /storage/data/coco --outputs /storage/data/coco300 --size 300 300
+command: apt-get install wget && pip3 install -r requirement.txt && sh model_opt/download_model.sh
 # --images val2017 --annotations annotations/instances_val2017.json
-container: paperspace/openvinopipeline:mo
-name: download_coco
+container: paperspace/gradient-benchmarks:mlperf
+name: download_ssd
+modelPath: /artifacts
+modelType: Custom
 projectId: pr20lgf8g
 workspace: ./gradient
 ignoreFiles: model-optimizer/*

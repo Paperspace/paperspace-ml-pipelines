@@ -2,8 +2,8 @@ machineType: metal-cpu
 clusterId : cl1nurf0i
 #command:  pip3 install -r requirement.txt && sh tools/download_coco.sh
 #command:  python3 ./tools/download_coco.py --inputs /storage/data/coco
-command: apt-get update && apt-get install libgl1-mesa-glx -y && pip3 install -r requirement.txt && python3 tools/upscale_coco/upscale_coco.py --inputs /storage/data/coco --outputs /storage/data/coco300 --size 300 300
-container: paperspace/openvinopipeline:mo
+command: apt-get install libgl1-mesa-glx -y && pip3 install -r requirement.txt && python3 tools/upscale_coco/upscale_coco.py --inputs /storage/data/coco --outputs /storage/data/coco300 --size 300 300
+container: paperspace/gradient-benchmarks:mlperf
 name: download_coco
 projectId: pr20lgf8g
 workspace: ./gradient

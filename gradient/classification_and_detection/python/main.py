@@ -24,6 +24,10 @@ import dataset
 import imagenet
 import coco
 
+import warnings
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+warnings.simplefilter('ignore',InsecureRequestWarning)
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("main")
 
@@ -107,6 +111,13 @@ SUPPORTED_PROFILES = {
         "outputs": "num_detections:0,detection_boxes:0,detection_scores:0,detection_classes:0",
         "dataset": "coco-300",
         "backend": "tensorflow",
+        "model-name": "ssd-mobilenet",
+    },
+    "ssd-mobilenet-openvino": {
+        "inputs": "image_tensor:0",
+        "outputs": "num_detections:0,detection_boxes:0,detection_scores:0,detection_classes:0",
+        "dataset": "coco-300",
+        "backend": "openvino",
         "model-name": "ssd-mobilenet",
     },
     "ssd-mobilenet-pytorch": {
@@ -227,21 +238,12 @@ def get_backend(backend):
     if backend == "tensorflow":
         from backend_tf import BackendTensorflow
         backend = BackendTensorflow()
-    elif backend == "onnxruntime":
-        from backend_onnxruntime import BackendOnnxruntime
-        backend = BackendOnnxruntime()
     elif backend == "null":
         from backend_null import BackendNull
         backend = BackendNull()
-    elif backend == "pytorch":
-        from backend_pytorch import BackendPytorch
-        backend = BackendPytorch()
-    elif backend == "pytorch-native":
-        from backend_pytorch_native import BackendPytorchNative
-        backend = BackendPytorchNative()      
-    elif backend == "tflite":
-        from backend_tflite import BackendTflite
-        backend = BackendTflite()
+    elif backend == "openvino":
+        from backend_openvino import BackendOpenvino
+        backend = BackendOpenvino()
     else:
         raise ValueError("unknown backend: " + backend)
     return backend
@@ -282,7 +284,8 @@ class RunnerBase:
         # run the prediction
         processed_results = []
         try:
-            results = self.model.predict({self.model.inputs[0]: qitem.img})
+            #results = self.model.predict({self.model.inputs[0]: qitem.img})
+            results = self.model.predict({"inputs": qitem.img.tolist()})
             processed_results = self.post_process(results, qitem.content_id, qitem.label, self.result_dict)
             if self.take_accuracy:
                 self.post_process.add_results(processed_results)
@@ -429,8 +432,8 @@ def main():
     # load model to backend
     model = backend.load(args.model, inputs=args.inputs, outputs=args.outputs)
     final_results = {
-        "runtime": model.name(),
-        "version": model.version(),
+        #"runtime": model.name(),
+        #"version": model.version(),
         "time": int(time.time()),
         "cmdline": str(args),
     }
@@ -454,7 +457,8 @@ def main():
     ds.load_query_samples([0])
     for _ in range(5):
         img, _ = ds.get_samples([0])
-        _ = backend.predict({backend.inputs[0]: img})
+        #_ = backend.predict({backend.inputs[0]: img})
+        _ = backend.predict({"inputs": img.tolist()})
     ds.unload_query_samples(None)
 
     scenario = SCENARIO_MAP[args.scenario]
@@ -464,7 +468,7 @@ def main():
         lg.TestScenario.Server: QueueRunner,
         lg.TestScenario.Offline: QueueRunner
     }
-    runner = runner_map[scenario](model, ds, args.threads, post_proc=post_proc, max_batchsize=args.max_batchsize)
+    runner = runner_map[scenario](backend, ds, args.threads, post_proc=post_proc, max_batchsize=args.max_batchsize)
 
     def issue_queries(query_samples):
         runner.enqueue(query_samples)
@@ -530,6 +534,10 @@ def main():
     #
     if args.output:
         with open("results.json", "w") as f:
+            json.dump(final_results, f, sort_keys=True, indent=4)
+    
+    if args.output:
+        with open("/artifacts/results.json", "w") as f:
             json.dump(final_results, f, sort_keys=True, indent=4)
 
 

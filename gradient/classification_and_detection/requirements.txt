@@ -1,0 +1,7 @@
+py-cpuinfo
+numpy
+progress
+opencv-python
+tensorflow>=1.2
+test-generator==0.1.1
+pycocotools

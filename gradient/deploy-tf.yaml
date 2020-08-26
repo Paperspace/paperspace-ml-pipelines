@@ -1,13 +1,13 @@
 clusterId: cl1nurf0i 
-command: /ie-serving-py/start_server.sh ie_serving model --model_path /models/model  --port 9001 --rest_port 8001 --model_name frozen_inference_graph
+command: tensorflow_model_server --port=8500 --rest_api_port=8501 --model_name=saved_model --model_base_path= --model_path /models/model  --port 9001 --rest_port 8001 --model_name frozen_inference_graph
 containerModelPath: /models/model/1
-containerUrlPath: /v1/models/frozen_inference_graph
+containerUrlPath: /v1/models/saved_model
 deploymentType: Custom
 dockerArgs: null
 env: null
 imagePassword: null
 imageServer: null
-imageUrl: intelaipg/openvino-model-server
+imageUrl: tensorflow/serving
 imageUsername: null
 instanceCount: 1
 machineType: metal-cpu
@@ -15,7 +15,7 @@ machineType: metal-cpu
 method: null
 metric: null
 #minInstanceCount: 1
-modelId: mosysqd26wiqelf
+modelId: mosfvzz5msd5nlo
 name: open-vino-server
 ports: 8001
 projectId: pr20lgf8g
