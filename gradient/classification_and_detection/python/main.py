@@ -537,7 +537,7 @@ def main():
             json.dump(final_results, f, sort_keys=True, indent=4)
     
     if args.output:
-        with open("/artifacts/results.json", "w") as f:
+        with open("/artifacts/results_"+args.backend+".json", "w") as f:
             json.dump(final_results, f, sort_keys=True, indent=4)
 
 
